@@ -6,6 +6,10 @@ pub struct DataTable {
 
 
 impl DataTable {
+    fn new() -> Self {
+        Self {keys: vec![], values: vec![]}
+    }
+
     fn key_exists(&self, key: String) -> bool {
         return self.keys.iter().any(|k| *k == key);
     }
@@ -13,7 +17,8 @@ impl DataTable {
     fn get_value(&self, key: String) -> Result<String, &'static str> {
         if !self.key_exists(key.clone()) {
             return Err("Key does not exist");
-        } 
+        }
+
         let idx: usize = self.keys.iter().position(|k| *k == key).unwrap();
         return Ok(self.values.get(idx).unwrap().clone());
     }
@@ -24,6 +29,16 @@ impl DataTable {
         }
         self.keys.push(key);
         self.values.push(value);
+        Ok(())
+    }
+
+    fn remove_member(&mut self ,key: String) -> Result<(),&'static str> {
+        if !self.key_exists(key.clone()) {
+            return Err("Key does not exist");
+        }
+
+        let idx: usize = self.keys.iter().position(|k| *k == key).unwrap();
+        self.keys.remove(idx);
         Ok(())
     }
 }
@@ -70,5 +85,26 @@ mod test {
         let val = data_table.get_value("hello".to_string()).unwrap();
         assert_eq!(val.to_string(), "hohoh");
 
+    }
+
+    #[test]
+    fn test_remove_value() {
+        let mut data_table = DataTable {
+            keys: vec!["hello".to_string(), "haha".to_string()],
+            values: vec!["hohoh".to_string(), "heeheee".to_string()],
+        };
+        
+
+        assert_eq!(data_table.key_exists("hello".to_string()), true);
+        data_table.remove_member("hello".to_string());
+        assert_eq!(data_table.key_exists("hello".to_string()), false);
+
+    }
+
+    #[test]
+    fn test_constructor() {
+        let mut data_table = DataTable::new();
+        data_table.add_member("first_key".to_string(), "first_value".to_string());
+        assert_eq!(data_table.get_value("first_key".to_string()).unwrap(), "first_value");
     }
 }
