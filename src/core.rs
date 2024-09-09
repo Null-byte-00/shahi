@@ -23,6 +23,16 @@ impl DataTable {
         return Ok(self.values.get(idx).unwrap().clone());
     }
 
+    fn set_value(&mut self, key: String, value: String) -> Result<(), &'static str> {
+        if !self.key_exists(key.clone()) {
+            return Err("Key does not exist");
+        }
+        
+        let idx: usize = self.keys.iter().position(|k| *k == key).unwrap();
+        self.values[idx] = value;
+        Ok(())
+    }
+
     fn add_member(&mut self,key: String,value: String) -> Result<(), &'static str> {
         if self.key_exists(key.clone()) {
             return Err("Key already exists");
@@ -99,6 +109,14 @@ mod test {
         data_table.remove_member("hello".to_string());
         assert_eq!(data_table.key_exists("hello".to_string()), false);
 
+    }
+
+    #[test]
+    fn test_set_value () {
+        let mut data_table = DataTable::new();
+        data_table.add_member("k1".to_string(), "v1".to_string());
+        data_table.set_value("k1".to_string(), "v2".to_string());
+        assert_eq!(data_table.get_value("k1".to_string()).unwrap(), "v2".to_string());
     }
 
     #[test]
