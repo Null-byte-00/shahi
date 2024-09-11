@@ -14,12 +14,12 @@ pub fn run_server() {
         let mut stream = stream.unwrap();
 
         let buf_reader = BufReader::new(&mut stream);
-    	let http_request: Vec<_> = buf_reader
+    	let request: Vec<_> = buf_reader
         	.lines()
         	.map(|result| result.unwrap())
         	.take_while(|line| !line.is_empty())
         	.collect();
-		let mut output = storage.run_command(http_request.get(0).unwrap().clone()).unwrap();
+		let mut output = storage.run_command(request.get(0).unwrap().clone()).unwrap();
 		stream.write_all(output.as_bytes()).unwrap();
 	}
 }
