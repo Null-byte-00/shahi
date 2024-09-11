@@ -1,7 +1,8 @@
 mod core;
 mod parse;
 mod commands;
+mod server;
 
 fn main() {
-    println!("Hello, world!");
+    server::run_server();
 }

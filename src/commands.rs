@@ -13,11 +13,11 @@ impl Storage {
         }
     }
 
-    fn run_command(&mut self, command: String) -> Result<String, &'static str> {
+    pub fn run_command(&mut self, command: String) -> Result<String, &'static str> {
         let parsed_command_result = parse::Command::parse(command);
         let parsed_command = match parsed_command_result {
             Ok(cmd) => cmd,
-            Err(error) => return Err("Invalid command"),
+            Err(error) => return Ok("Invalid command".to_string()),
         };
 
         match parsed_command {
