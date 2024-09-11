@@ -6,15 +6,15 @@ pub struct DataTable {
 
 
 impl DataTable {
-    fn new() -> Self {
+    pub fn new() -> Self {
         Self {keys: vec![], values: vec![]}
     }
 
-    fn key_exists(&self, key: String) -> bool {
+    pub fn key_exists(&self, key: String) -> bool {
         return self.keys.iter().any(|k| *k == key);
     }
 
-    fn get_value(&self, key: String) -> Result<String, &'static str> {
+    pub fn get_value(&self, key: String) -> Result<String, &'static str> {
         if !self.key_exists(key.clone()) {
             return Err("Key does not exist");
         }
@@ -23,7 +23,7 @@ impl DataTable {
         return Ok(self.values.get(idx).unwrap().clone());
     }
 
-    fn set_value(&mut self, key: String, value: String) -> Result<(), &'static str> {
+    pub fn set_value(&mut self, key: String, value: String) -> Result<(), &'static str> {
         if !self.key_exists(key.clone()) {
             return Err("Key does not exist");
         }
@@ -33,7 +33,7 @@ impl DataTable {
         Ok(())
     }
 
-    fn add_member(&mut self,key: String,value: String) -> Result<(), &'static str> {
+    pub fn add_member(&mut self,key: String,value: String) -> Result<(), &'static str> {
         if self.key_exists(key.clone()) {
             return Err("Key already exists");
         }
@@ -42,7 +42,7 @@ impl DataTable {
         Ok(())
     }
 
-    fn remove_member(&mut self ,key: String) -> Result<(),&'static str> {
+    pub fn remove_member(&mut self ,key: String) -> Result<(),&'static str> {
         if !self.key_exists(key.clone()) {
             return Err("Key does not exist");
         }
