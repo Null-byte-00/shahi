@@ -6,8 +6,10 @@ use std::{
 
 
 
-pub fn run_server() {
-	let listener = TcpListener::bind("127.0.0.1:7878").unwrap();
+pub fn run_server(port: i32) {
+    let mut server = "127.0.0.1:".to_string();
+    server.push_str(port.to_string().as_str());
+	let listener = TcpListener::bind(server.as_str()).unwrap();
 	let mut storage = commands::Storage::new();
 
     for stream in listener.incoming() {
